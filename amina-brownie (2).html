@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amina Brownie – Artisan Brownies</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --choc: #3B1A0A;
+  --choc-mid: #6B3020;
+  --choc-light: #A0522D;
+  --pink: #E8537A;
+  --pink-light: #F9C4D0;
+  --cream: #FFF8F0;
+  --cream-dark: #F2E8D5;
+  --gold: #C9933A;
+  --gold-light: #F0D080;
+  --white: #FFFFFF;
+  --text-dark: #1A0A00;
+  --text-mid: #5A3020;
+  --shadow-neu: 8px 8px 20px #b8a898, -8px -8px 20px #fffaf5;
+  --shadow-neu-sm: 4px 4px 12px #c8b8a8, -4px -4px 12px #fffaf5;
+  --shadow-neu-pressed: inset 4px 4px 12px #b8a898, inset -4px -4px 12px #fffaf5;
+  --radius: 20px;
+  --radius-sm: 12px;
+  --font-display: 'Playfair Display', serif;
+  --font-script: 'Dancing Script', cursive;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* ========= NAV ========= */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+  height: 70px;
+  background: rgba(255,248,240,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(169,82,45,0.12);
+  transition: box-shadow 0.3s;
+}
+nav.scrolled { box-shadow: 0 4px 24px rgba(59,26,10,0.1); }
+
+.nav-logo {
+  font-family: var(--font-script);
+  font-size: 1.8rem;
+  color: var(--pink);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.nav-logo span { color: var(--choc); font-size: 1rem; font-family: var(--font-body); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.nav-links {
+  display: flex; gap: 2rem; list-style: none;
+}
+.nav-links a {
+  color: var(--text-mid); text-decoration: none; font-weight: 500;
+  font-size: 0.9rem; letter-spacing: 0.04em; text-transform: uppercase;
+  position: relative; transition: color 0.2s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 2px;
+  background: var(--pink); transform: scaleX(0); transition: transform 0.2s;
+}
+.nav-links a:hover { color: var(--pink); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-actions { display: flex; align-items: center; gap: 1rem; }
+
+.btn-nav {
+  background: var(--pink);
+  color: white;
+  border: none;
+  padding: 0.55rem 1.3rem;
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.03em;
+}
+.btn-nav:hover { background: var(--choc-mid); transform: translateY(-1px); }
+
+.cart-btn {
+  position: relative;
+  background: var(--cream-dark);
+  border: none;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.2s;
+}
+.cart-btn:hover { background: var(--pink-light); transform: scale(1.05); }
+.cart-count {
+  position: absolute; top: -4px; right: -4px;
+  background: var(--pink); color: white;
+  width: 18px; height: 18px; border-radius: 50%;
+  font-size: 0.65rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+.hamburger span { width: 24px; height: 2px; background: var(--choc); border-radius: 2px; transition: all 0.3s; }
+
+/* ========= PAGES ========= */
+.page { display: none; min-height: 100vh; padding-top: 70px; }
+.page.active { display: block; }
+
+/* ========= HOME PAGE – SPLIT SCREEN ========= */
+#home-page { padding-top: 0; overflow: hidden; }
+
+.split-screen {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.split-left {
+  background: linear-gradient(145deg, #2A0E02 0%, #5A2010 50%, #3B1A0A 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 4rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.split-left::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 70%, rgba(232,83,122,0.15) 0%, transparent 60%),
+              radial-gradient(circle at 80% 20%, rgba(201,147,58,0.1) 0%, transparent 50%);
+}
+
+.split-left::after {
+  content: '🍫';
+  position: absolute; font-size: 300px; opacity: 0.03;
+  right: -60px; bottom: -60px;
+}
+
+.brand-logo-wrap {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  animation: fadeUp 1s ease both;
+}
+
+.logo-mascot {
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,83,122,0.2), rgba(59,26,10,0.5));
+  display: flex; align-items: center; justify-content: center;
+  border: 3px solid rgba(232,83,122,0.4);
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-mascot-inner {
+  width: 200px; height: 200px;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><radialGradient id="bg" cx="50%25" cy="50%25" r="50%25"><stop offset="0%25" stop-color="%23F9C4D0"/><stop offset="100%25" stop-color="%23E8537A"/></radialGradient></defs><circle cx="100" cy="100" r="100" fill="url(%23bg)"/><text x="50%25" y="55%25" font-size="90" text-anchor="middle" dominant-baseline="middle">🧁</text></svg>') center/cover;
+  border-radius: 50%;
+}
+
+.brand-name-big {
+  font-family: var(--font-script);
+  font-size: 3.5rem;
+  color: var(--pink);
+  text-align: center;
+  line-height: 1;
+  margin-bottom: 0.2rem;
+  animation: fadeUp 1s 0.2s ease both;
+}
+.brand-sub {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--gold-light);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  animation: fadeUp 1s 0.4s ease both;
+}
+.brand-tagline {
+  color: rgba(255,248,240,0.65);
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.6;
+  animation: fadeUp 1s 0.6s ease both;
+}
+
+.split-left-badges {
+  display: flex; gap: 1rem; margin-top: 2.5rem;
+  animation: fadeUp 1s 0.8s ease both;
+}
+.badge-pill {
+  background: rgba(232,83,122,0.2);
+  border: 1px solid rgba(232,83,122,0.4);
+  color: var(--pink-light);
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.location-bar {
+  margin-top: 2rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50px;
+  padding: 0.6rem 1.2rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: rgba(255,248,240,0.8);
+  font-size: 0.85rem;
+  animation: fadeUp 1s 1s ease both;
+}
+.location-bar:hover { background: rgba(255,255,255,0.14); }
+.location-bar span { font-size: 1rem; }
+
+/* Split right */
+.split-right {
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 4rem 4rem;
+  overflow-y: auto;
+}
+
+.offer-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(169,82,45,0.1);
+  box-shadow: 0 4px 24px rgba(59,26,10,0.06);
+  position: relative;
+  overflow: hidden;
+  animation: slideIn 0.8s ease both;
+}
+.offer-card:nth-child(2) { animation-delay: 0.15s; }
+.offer-card:nth-child(3) { animation-delay: 0.3s; }
+
+.offer-card.featured {
+  background: linear-gradient(135deg, #2A0E02, #6B3020);
+  color: white;
+}
+.offer-card.featured .offer-price { color: var(--gold-light); }
+.offer-card.featured .offer-label { color: rgba(255,248,240,0.7); }
+.offer-card.featured .offer-title { color: white; }
+.offer-card.featured .offer-desc { color: rgba(255,248,240,0.7); }
+
+.offer-badge {
+  position: absolute; top: 1rem; right: 1rem;
+  background: var(--pink);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.offer-badge.gold { background: var(--gold); }
+
+.offer-label {
+  font-size: 0.75rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--pink);
+  margin-bottom: 0.4rem;
+}
+.offer-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--choc);
+  margin-bottom: 0.5rem;
+}
+.offer-desc { color: var(--text-mid); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1rem; }
+.offer-meta { display: flex; align-items: center; gap: 1rem; }
+.offer-price {
+  font-size: 1.6rem; font-weight: 700;
+  color: var(--pink);
+  font-family: var(--font-display);
+}
+.offer-price small { font-size: 0.8rem; font-weight: 400; opacity: 0.7; }
+
+.btn-offer {
+  background: var(--pink);
+  color: white; border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-weight: 600; font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: auto;
+}
+.btn-offer:hover { background: var(--choc-mid); transform: scale(1.02); }
+.btn-offer.outline {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+.btn-offer.outline:hover { background: rgba(255,255,255,0.15); transform: scale(1.02); }
+
+.offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+.mini-offer {
+  background: white;
+  border: 1px solid rgba(169,82,45,0.1);
+  border-radius: var(--radius-sm);
+  padding: 1.2rem;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(59,26,10,0.05);
+  animation: slideIn 0.8s 0.45s ease both;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mini-offer:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(59,26,10,0.1); }
+.mini-offer-emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+.mini-offer-title { font-weight: 600; font-size: 0.85rem; color: var(--choc); margin-bottom: 0.3rem; }
+.mini-offer-price { color: var(--pink); font-weight: 700; font-size: 0.9rem; }
+
+/* ========= LOGIN PAGE – NEUMORPHISM ========= */
+#login-page {
+  background: var(--cream-dark);
+  display: none;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+#login-page.active { display: flex; }
+
+.neu-card {
+  background: var(--cream-dark);
+  border-radius: 30px;
+  box-shadow: var(--shadow-neu);
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 440px;
+  animation: fadeUp 0.6s ease;
+}
+
+.neu-logo {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.neu-logo .script { font-family: var(--font-script); font-size: 2.5rem; color: var(--pink); }
+.neu-logo .sub { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-mid); }
+
+.neu-title { font-family: var(--font-display); font-size: 1.6rem; color: var(--choc); margin-bottom: 0.4rem; text-align: center; }
+.neu-subtitle { color: var(--text-mid); font-size: 0.85rem; text-align: center; margin-bottom: 2rem; }
+
+.neu-field {
+  margin-bottom: 1.5rem;
+}
+.neu-field label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  margin-bottom: 0.6rem;
+}
+.neu-input {
+  width: 100%;
+  background: var(--cream-dark);
+  border: none;
+  outline: none;
+  border-radius: 14px;
+  box-shadow: var(--shadow-neu-pressed);
+  padding: 0.9rem 1.2rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--choc);
+  transition: box-shadow 0.2s;
+}
+.neu-input:focus {
+  box-shadow: inset 3px 3px 8px #b8a898, inset -3px -3px 8px #fffaf5, 0 0 0 3px rgba(232,83,122,0.2);
+}
+.neu-input::placeholder { color: #b0a090; }
+
+.neu-btn {
+  width: 100%;
+  background: var(--cream-dark);
+  border: none;
+  border-radius: 50px;
+  box-shadow: var(--shadow-neu);
+  padding: 0.95rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--pink);
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.04em;
+  margin-top: 0.5rem;
+  position: relative;
+}
+.neu-btn:active { box-shadow: var(--shadow-neu-pressed); transform: scale(0.99); }
+.neu-btn:hover { color: var(--choc-mid); }
+.neu-btn.primary {
+  background: var(--pink);
+  color: white;
+  box-shadow: 6px 6px 16px rgba(232,83,122,0.35), -2px -2px 10px rgba(255,255,255,0.6);
+}
+.neu-btn.primary:hover { background: #d04068; }
+.neu-btn.primary:active { box-shadow: inset 4px 4px 10px rgba(0,0,0,0.2); }
+
+.neu-divider {
+  display: flex; align-items: center; gap: 1rem;
+  margin: 1.5rem 0;
+  color: var(--text-mid); font-size: 0.8rem;
+}
+.neu-divider::before, .neu-divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(90,48,32,0.2), transparent);
+}
+
+.google-btn {
+  display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+}
+.google-icon {
+  width: 20px; height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23EA4335' d='M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z'/%3E%3Cpath fill='%234285F4' d='M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z'/%3E%3Cpath fill='%23FBBC05' d='M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z'/%3E%3Cpath fill='%2334A853' d='M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+.neu-footer { text-align: center; margin-top: 1.5rem; font-size: 0.82rem; color: var(--text-mid); }
+.neu-footer a { color: var(--pink); text-decoration: none; font-weight: 600; }
+
+.login-loading {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(255,248,240,0.9);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+.login-loading.show { display: flex; }
+.loading-dots { display: flex; gap: 8px; }
+.loading-dots span {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--pink);
+  animation: bounce 1.2s infinite ease-in-out;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+.loading-text { font-family: var(--font-display); color: var(--choc); font-size: 1.1rem; }
+
+/* ========= MENU PAGE – BENTO GRID ========= */
+#menu-page { background: var(--cream); }
+
+.menu-header {
+  background: linear-gradient(135deg, #2A0E02, #5A2010);
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.menu-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(232,83,122,0.2) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(201,147,58,0.15) 0%, transparent 50%);
+}
+.menu-header-content { position: relative; z-index: 1; }
+.menu-header h1 { font-family: var(--font-display); font-size: 2.2rem; margin-bottom: 0.5rem; }
+.menu-header p { color: rgba(255,248,240,0.7); font-size: 0.95rem; }
+
+.menu-controls {
+  padding: 1.5rem 2rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  background: white;
+  border-bottom: 1px solid rgba(169,82,45,0.08);
+}
+
+.filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; flex: 1; }
+.filter-tab {
+  background: var(--cream);
+  border: 1px solid rgba(169,82,45,0.15);
+  border-radius: 50px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-mid);
+  transition: all 0.2s;
+  font-family: var(--font-body);
+}
+.filter-tab.active, .filter-tab:hover {
+  background: var(--pink); color: white; border-color: var(--pink);
+}
+
+.search-box {
+  display: flex; align-items: center;
+  background: var(--cream);
+  border: 1px solid rgba(169,82,45,0.15);
+  border-radius: 50px;
+  padding: 0.45rem 1rem;
+  gap: 0.5rem;
+}
+.search-box input {
+  border: none; background: transparent;
+  font-family: var(--font-body); font-size: 0.85rem;
+  color: var(--choc); outline: none; width: 180px;
+}
+.search-box input::placeholder { color: #b0a090; }
+
+/* Bento Grid */
+.bento-container { padding: 2rem; }
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+  auto-rows: 280px;
+}
+
+.bento-item {
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: white;
+  border: 1px solid rgba(169,82,45,0.08);
+  box-shadow: 0 2px 16px rgba(59,26,10,0.06);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.bento-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(59,26,10,0.14);
+  border-color: rgba(232,83,122,0.2);
+}
+
+.bento-item.wide { grid-column: span 2; }
+.bento-item.tall { grid-row: span 2; }
+.bento-item.big { grid-column: span 2; grid-row: span 2; }
+
+.bento-img {
+  width: 100%; flex: 1;
+  background-size: cover; background-position: center;
+  position: relative;
+  min-height: 160px;
+}
+
+.bento-special-badge {
+  position: absolute; top: 0.8rem; left: 0.8rem;
+  background: var(--gold);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.25rem 0.7rem;
+  border-radius: 50px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.bento-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.bento-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--choc);
+  line-height: 1.3;
+}
+.bento-desc { font-size: 0.78rem; color: var(--text-mid); line-height: 1.4; }
+.bento-footer {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.bento-price {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--pink);
+}
+.bento-price small {
+  font-size: 0.7rem;
+  font-family: var(--font-body);
+  color: var(--text-mid);
+  font-weight: 400;
+}
+.add-btn {
+  width: 34px; height: 34px;
+  background: var(--pink);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.add-btn:hover { background: var(--choc-mid); transform: scale(1.1); }
+
+/* Big bento featured */
+.bento-item.featured-bento {
+  background: linear-gradient(145deg, #2A0E02, #6B3020);
+  color: white;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  min-height: 280px;
+}
+.bento-item.featured-bento .bento-name { color: white; font-size: 1.4rem; font-family: var(--font-display); }
+.bento-item.featured-bento .bento-desc { color: rgba(255,248,240,0.7); font-size: 0.88rem; }
+.bento-item.featured-bento .bento-price { color: var(--gold-light); font-size: 1.5rem; }
+
+/* Cart sidebar */
+.cart-sidebar {
+  position: fixed; top: 0; right: -420px; bottom: 0;
+  width: 420px; max-width: 100vw;
+  background: white;
+  box-shadow: -8px 0 40px rgba(59,26,10,0.12);
+  z-index: 2000;
+  display: flex; flex-direction: column;
+  transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.cart-sidebar.open { right: 0; }
+.cart-overlay {
+  position: fixed; inset: 0;
+  background: rgba(59,26,10,0.4);
+  z-index: 1999;
+  display: none; opacity: 0;
+  transition: opacity 0.3s;
+}
+.cart-overlay.show { display: block; opacity: 1; }
+
+.cart-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(169,82,45,0.1);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cart-header h3 { font-family: var(--font-display); color: var(--choc); font-size: 1.3rem; }
+.close-btn {
+  background: var(--cream); border: none;
+  width: 38px; height: 38px;
+  border-radius: 50%; cursor: pointer;
+  font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--choc);
+  transition: all 0.2s;
+}
+.close-btn:hover { background: var(--pink-light); }
+
+.cart-items { flex: 1; overflow-y: auto; padding: 1rem; }
+.cart-empty {
+  text-align: center; padding: 3rem 1rem;
+  color: var(--text-mid);
+}
+.cart-empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+.cart-item {
+  display: flex; gap: 1rem; align-items: center;
+  padding: 1rem;
+  background: var(--cream);
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.8rem;
+}
+.cart-item-img {
+  width: 60px; height: 60px;
+  border-radius: 10px;
+  background-size: cover; background-position: center;
+  background-color: var(--cream-dark);
+  flex-shrink: 0;
+}
+.cart-item-info { flex: 1; }
+.cart-item-name { font-weight: 600; font-size: 0.9rem; color: var(--choc); margin-bottom: 0.2rem; }
+.cart-item-price { color: var(--pink); font-weight: 700; font-size: 0.9rem; }
+.cart-item-qty {
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.qty-btn {
+  width: 28px; height: 28px;
+  background: white; border: 1px solid rgba(169,82,45,0.2);
+  border-radius: 50%; cursor: pointer;
+  font-size: 1rem; color: var(--choc);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.qty-btn:hover { background: var(--pink); color: white; border-color: var(--pink); }
+.qty-num { font-weight: 600; font-size: 0.9rem; min-width: 20px; text-align: center; }
+
+.cart-footer { padding: 1.5rem; border-top: 1px solid rgba(169,82,45,0.1); }
+.cart-total {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1rem;
+}
+.cart-total span { font-weight: 600; color: var(--text-mid); }
+.cart-total strong { font-family: var(--font-display); font-size: 1.4rem; color: var(--choc); }
+
+.checkout-btns { display: flex; flex-direction: column; gap: 0.7rem; }
+.btn-checkout {
+  width: 100%; padding: 0.95rem;
+  border: none; border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-checkout.primary { background: var(--pink); color: white; }
+.btn-checkout.primary:hover { background: var(--choc-mid); }
+.btn-checkout.whatsapp {
+  background: #25D366; color: white;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.btn-checkout.whatsapp:hover { background: #1da851; }
+
+/* Payment Modal */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 3000;
+  background: rgba(59,26,10,0.5);
+  display: none; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay.show { display: flex; }
+
+.modal {
+  background: white;
+  border-radius: 24px;
+  width: 100%; max-width: 480px;
+  box-shadow: 0 24px 80px rgba(59,26,10,0.2);
+  animation: fadeUp 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(169,82,45,0.1);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-header h3 { font-family: var(--font-display); color: var(--choc); }
+.modal-body { padding: 1.5rem; }
+
+.payment-methods { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem; }
+.payment-method {
+  border: 2px solid rgba(169,82,45,0.12);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 1rem;
+  transition: all 0.2s;
+}
+.payment-method:hover { border-color: var(--pink); background: rgba(232,83,122,0.03); }
+.payment-method.selected { border-color: var(--pink); background: rgba(232,83,122,0.05); }
+.payment-method input[type="radio"] { accent-color: var(--pink); }
+.payment-icon { font-size: 1.5rem; }
+.payment-label { font-weight: 600; font-size: 0.9rem; color: var(--choc); }
+.payment-desc { font-size: 0.75rem; color: var(--text-mid); }
+
+.upi-input {
+  margin-top: 0.8rem;
+  width: 100%;
+  border: 1px solid rgba(169,82,45,0.2);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  color: var(--choc);
+}
+.upi-input:focus { border-color: var(--pink); }
+.upi-input::placeholder { color: #b0a090; }
+
+.btn-pay {
+  width: 100%; padding: 1rem;
+  background: var(--pink); color: white;
+  border: none; border-radius: 50px;
+  font-size: 1rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  font-family: var(--font-body);
+}
+.btn-pay:hover { background: var(--choc-mid); }
+
+/* ========= CONTACT PAGE ========= */
+#contact-page { background: var(--cream); }
+
+.contact-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.contact-info h2 { font-family: var(--font-display); font-size: 2rem; color: var(--choc); margin-bottom: 1rem; }
+.contact-info p { color: var(--text-mid); line-height: 1.7; margin-bottom: 2rem; }
+
+.contact-detail {
+  display: flex; align-items: flex-start; gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+.contact-icon {
+  width: 44px; height: 44px;
+  background: var(--cream-dark);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.contact-detail strong { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-mid); display: block; margin-bottom: 0.2rem; }
+.contact-detail span { color: var(--choc); font-weight: 500; font-size: 0.95rem; }
+
+.contact-form { background: white; border-radius: var(--radius); padding: 2rem; box-shadow: 0 4px 24px rgba(59,26,10,0.06); }
+.form-field { margin-bottom: 1.2rem; }
+.form-field label { display: block; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 0.5rem; }
+.form-input {
+  width: 100%;
+  border: 1.5px solid rgba(169,82,45,0.15);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--choc);
+  outline: none;
+  transition: border-color 0.2s;
+  background: var(--cream);
+}
+.form-input:focus { border-color: var(--pink); background: white; }
+.form-input::placeholder { color: #b0a090; }
+textarea.form-input { resize: vertical; min-height: 100px; }
+.btn-submit {
+  width: 100%; padding: 0.9rem;
+  background: var(--pink); color: white;
+  border: none; border-radius: 50px;
+  font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  font-family: var(--font-body);
+}
+.btn-submit:hover { background: var(--choc-mid); }
+
+/* ========= ADMIN PANEL ========= */
+.admin-fab {
+  position: fixed; bottom: 2rem; right: 2rem;
+  background: var(--choc);
+  color: white;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(59,26,10,0.3);
+  z-index: 500;
+  transition: all 0.2s;
+  display: none;
+}
+#menu-page.active ~ .admin-fab,
+body[data-admin] .admin-fab { display: flex; align-items: center; justify-content: center; }
+.admin-fab:hover { background: var(--pink); transform: scale(1.08) rotate(45deg); }
+
+/* Toasts */
+.toast-container {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  z-index: 9998;
+  display: flex; flex-direction: column-reverse; gap: 0.5rem;
+  pointer-events: none;
+}
+.toast {
+  background: var(--choc);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(59,26,10,0.2);
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.5s forwards;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.success { background: var(--pink); }
+
+/* ========= ANIMATIONS ========= */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-12px); }
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toastOut {
+  to { opacity: 0; transform: translateY(10px) scale(0.95); }
+}
+
+/* ========= RESPONSIVE ========= */
+@media (max-width: 900px) {
+  .bento-grid { grid-template-columns: repeat(2, 1fr); }
+  .bento-item.wide { grid-column: span 2; }
+  .bento-item.tall { grid-row: span 1; }
+  .bento-item.big { grid-column: span 2; }
+  .contact-wrap { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .split-screen { grid-template-columns: 1fr; }
+  .split-left { padding: 5rem 2rem 2.5rem; min-height: 60vh; }
+  .split-right { padding: 2rem 1.5rem; }
+  .offer-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .bento-grid { grid-template-columns: 1fr 1fr; }
+  .bento-item.big { grid-column: span 2; }
+  .cart-sidebar { width: 100%; }
+  .split-left::after { display: none; }
+  .menu-controls { padding: 1rem; }
+  .search-box input { width: 120px; }
+  .filter-tabs { gap: 0.4rem; }
+  .filter-tab { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
+}
+
+@media (max-width: 480px) {
+  .bento-grid { grid-template-columns: 1fr; }
+  .bento-item.wide, .bento-item.big { grid-column: span 1; }
+  .offer-grid { grid-template-columns: 1fr; }
+}
+
+/* Mobile nav drawer */
+.mobile-nav {
+  display: none;
+  position: fixed; top: 70px; left: 0; right: 0;
+  background: white;
+  border-bottom: 1px solid rgba(169,82,45,0.1);
+  z-index: 999;
+  box-shadow: 0 8px 24px rgba(59,26,10,0.1);
+}
+.mobile-nav.open { display: block; }
+.mobile-nav ul { list-style: none; padding: 1rem; }
+.mobile-nav ul li a {
+  display: block;
+  padding: 0.8rem 1rem;
+  color: var(--text-mid);
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 10px;
+  transition: background 0.2s;
+  font-size: 0.95rem;
+}
+.mobile-nav ul li a:hover { background: var(--cream); color: var(--pink); }
+
+/* Success animation */
+.success-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(255,248,240,0.96);
+  display: none; align-items: center; justify-content: center;
+  flex-direction: column; gap: 1rem;
+}
+.success-overlay.show { display: flex; }
+.success-icon { font-size: 5rem; animation: bounce 0.6s ease; }
+.success-title { font-family: var(--font-display); font-size: 2rem; color: var(--choc); }
+.success-sub { color: var(--text-mid); font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a class="nav-logo" href="#" onclick="showPage('home')">
+    Amina <span>Brownie</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')">Home</a></li>
+    <li><a href="#" onclick="showPage('menu')">Menu</a></li>
+    <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    <li><a href="#" onclick="showPage('login')">Login</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="cart-btn" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">0</span></button>
+    <button class="btn-nav" onclick="showPage('login')" id="loginBtn">Login</button>
+    <button class="hamburger" onclick="toggleMobileNav()" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <ul>
+    <li><a href="#" onclick="showPage('home');toggleMobileNav()">🏠 Home</a></li>
+    <li><a href="#" onclick="showPage('menu');toggleMobileNav()">🍫 Menu</a></li>
+    <li><a href="#" onclick="showPage('contact');toggleMobileNav()">📞 Contact</a></li>
+    <li><a href="#" onclick="showPage('login');toggleMobileNav()">👤 Login</a></li>
+  </ul>
+</div>
+
+<!-- ========= HOME PAGE ========= -->
+<div id="home-page" class="page active">
+  <div class="split-screen">
+    <div class="split-left">
+      <div class="brand-logo-wrap">
+        <div class="logo-mascot">
+          <div class="logo-mascot-inner"></div>
+        </div>
+        <div class="brand-name-big">Amina</div>
+        <div class="brand-sub">Brownie</div>
+        <p class="brand-tagline">Handcrafted with love — rich, fudgy brownies baked fresh daily in Tiruchirappalli</p>
+        <div class="split-left-badges">
+          <span class="badge-pill">🌿 Halal</span>
+          <span class="badge-pill">✨ Fresh Daily</span>
+          <span class="badge-pill">🚚 Delivery</span>
+        </div>
+        <div class="location-bar" onclick="setLocation()">
+          <span>📍</span>
+          <span id="locationText">Set delivery location</span>
+          <span>›</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="split-right">
+      <div style="margin-bottom: 1.5rem;">
+        <p style="font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 0.3rem;">Today's Special</p>
+        <h2 style="font-family: var(--font-display); font-size: 1.7rem; color: var(--choc);">What's Fresh Right Now</h2>
+      </div>
+
+      <div class="offer-card featured">
+        <span class="offer-badge gold">⭐ Sunday Offer</span>
+        <div class="offer-label" style="color: var(--gold-light);">Limited Time</div>
+        <div class="offer-title">Special Variety Brownie Box</div>
+        <div class="offer-desc">6 unique flavors — fudgy, cakey & irresistible. Perfect for sharing or gifting!</div>
+        <div class="offer-meta">
+          <div class="offer-price">Rs 200/- <small>for 6 pcs</small></div>
+          <button class="btn-offer outline" onclick="addComboToCart()">Order Now →</button>
+        </div>
+      </div>
+
+      <div class="offer-card">
+        <span class="offer-badge">Birthday</span>
+        <div class="offer-label">Custom Orders</div>
+        <div class="offer-title">Birthday Brownie Cakes</div>
+        <div class="offer-desc">Half kg or 1 kg customized brownie cakes. Order 1 day in advance.</div>
+        <div class="offer-meta">
+          <div class="offer-price" style="color: var(--choc);">From Rs 350/-</div>
+          <button class="btn-offer" onclick="orderWhatsApp()">WhatsApp Order</button>
+        </div>
+      </div>
+
+      <div class="offer-grid">
+        <div class="mini-offer" onclick="showPage('menu')">
+          <div class="mini-offer-emoji">🍫</div>
+          <div class="mini-offer-title">Classic Brownie</div>
+          <div class="mini-offer-price">From Rs 25/-</div>
+        </div>
+        <div class="mini-offer" onclick="showPage('menu')">
+          <div class="mini-offer-emoji">🥜</div>
+          <div class="mini-offer-title">Nutella Brownie</div>
+          <div class="mini-offer-price">From Rs 30/-</div>
+        </div>
+        <div class="mini-offer" onclick="showPage('menu')">
+          <div class="mini-offer-emoji">💀</div>
+          <div class="mini-offer-title">Death by Choc</div>
+          <div class="mini-offer-price">From Rs 35/-</div>
+        </div>
+        <div class="mini-offer" onclick="showPage('menu')">
+          <div class="mini-offer-emoji">🫙</div>
+          <div class="mini-offer-title">Brownie Bits</div>
+          <div class="mini-offer-price">From Rs 25/-</div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+        <button class="btn-offer" style="flex:1; min-width: 140px;" onclick="showPage('menu')">Browse Full Menu →</button>
+        <button class="btn-offer" style="flex:1; min-width: 140px; background: #25D366;" onclick="orderWhatsApp()">📱 WhatsApp Order</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========= LOGIN PAGE ========= -->
+<div id="login-page" class="page">
+  <div class="neu-card">
+    <div class="neu-logo">
+      <div class="script">Amina Brownie</div>
+      <div class="sub">Member Portal</div>
+    </div>
+    <div class="neu-title">Welcome Back</div>
+    <div class="neu-subtitle">Login to track your orders & exclusive offers</div>
+
+    <div class="neu-field">
+      <label>Email Address</label>
+      <input type="email" class="neu-input" placeholder="you@example.com" id="emailInput">
+    </div>
+    <div class="neu-field">
+      <label>Password</label>
+      <input type="password" class="neu-input" placeholder="Enter your password" id="passInput">
+    </div>
+
+    <div style="text-align: right; margin-top: -0.5rem; margin-bottom: 1.2rem;">
+      <a href="#" style="font-size: 0.8rem; color: var(--pink); text-decoration: none; font-weight: 500;">Forgot password?</a>
+    </div>
+
+    <button class="neu-btn primary" onclick="doLogin()">Login →</button>
+
+    <div class="neu-divider">or continue with</div>
+
+    <button class="neu-btn google-btn" onclick="googleLogin()">
+      <div class="google-icon"></div>
+      Sign in with Google
+    </button>
+
+    <div class="neu-footer">
+      Don't have an account? <a href="#" onclick="showToast('Sign up coming soon!','success')">Sign up free</a>
+    </div>
+  </div>
+</div>
+
+<!-- Loading overlay -->
+<div class="login-loading" id="loginLoading">
+  <div class="loading-dots">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="loading-text">Logging you in…</div>
+</div>
+
+<!-- ========= MENU PAGE ========= -->
+<div id="menu-page" class="page">
+  <div class="menu-header">
+    <div class="menu-header-content">
+      <h1>Our Brownie Menu</h1>
+      <p>Handcrafted fresh daily · Available in Medium & Big sizes</p>
+    </div>
+  </div>
+
+  <div class="menu-controls">
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterMenu('all',this)">All</button>
+      <button class="filter-tab" onclick="filterMenu('classic',this)">Classic</button>
+      <button class="filter-tab" onclick="filterMenu('premium',this)">Premium</button>
+      <button class="filter-tab" onclick="filterMenu('special',this)">Special</button>
+      <button class="filter-tab" onclick="filterMenu('bits',this)">Bits & Combos</button>
+    </div>
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" placeholder="Search brownies…" id="menuSearch" oninput="searchMenu()">
+    </div>
+  </div>
+
+  <div class="bento-container">
+    <div class="bento-grid" id="bentoGrid"></div>
+  </div>
+</div>
+
+<!-- ========= CONTACT PAGE ========= -->
+<div id="contact-page" class="page">
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h2>Get in Touch</h2>
+      <p>Have a custom order request, bulk enquiry, or birthday cake order? We'd love to hear from you! WhatsApp is the fastest way to reach us.</p>
+      
+      <div class="contact-detail">
+        <div class="contact-icon">📍</div>
+        <div>
+          <strong>Location</strong>
+          <span>Tiruchirappalli, Tamil Nadu</span>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">📱</div>
+        <div>
+          <strong>WhatsApp</strong>
+          <span>Available 9 AM – 9 PM</span>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <strong>Order Hours</strong>
+          <span>Daily · Delivery by evening</span>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">🎂</div>
+        <div>
+          <strong>Custom Orders</strong>
+          <span>1 day advance notice needed</span>
+        </div>
+      </div>
+
+      <button class="btn-offer" style="margin-top: 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem; background: #25D366;" onclick="orderWhatsApp()">
+        📱 Chat on WhatsApp
+      </button>
+    </div>
+
+    <div class="contact-form">
+      <h3 style="font-family: var(--font-display); color: var(--choc); margin-bottom: 1.5rem;">Send a Message</h3>
+      <div class="form-field">
+        <label>Your Name</label>
+        <input type="text" class="form-input" placeholder="Enter your name">
+      </div>
+      <div class="form-field">
+        <label>Phone / WhatsApp</label>
+        <input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX">
+      </div>
+      <div class="form-field">
+        <label>Order Type</label>
+        <select class="form-input" style="cursor:pointer;">
+          <option>Regular Order</option>
+          <option>Birthday Cake</option>
+          <option>Bulk / Corporate</option>
+          <option>Custom Request</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Message</label>
+        <textarea class="form-input" placeholder="Tell us what you'd like…"></textarea>
+      </div>
+      <button class="btn-submit" onclick="submitContact()">Send Message →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========= CART SIDEBAR ========= -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3>🛒 Your Order</h3>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total">
+      <span>Total</span>
+      <strong id="cartTotal">Rs 0/-</strong>
+    </div>
+    <div class="checkout-btns">
+      <button class="btn-checkout primary" onclick="openPayment()">💳 Checkout</button>
+      <button class="btn-checkout whatsapp" onclick="orderWhatsApp()">📱 Order via WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========= PAYMENT MODAL ========= -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>💳 Payment</h3>
+      <button class="close-btn" onclick="closePayment()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background: var(--cream); border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <span style="color: var(--text-mid); font-size: 0.9rem;">Order Total</span>
+        <strong style="font-family: var(--font-display); font-size: 1.3rem; color: var(--choc);" id="modalTotal">Rs 0/-</strong>
+      </div>
+
+      <p style="font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 0.8rem;">Select Payment Method</p>
+
+      <div class="payment-methods">
+        <label class="payment-method selected" onclick="selectPayment(this,'upi')">
+          <input type="radio" name="payment" checked>
+          <div class="payment-icon">📱</div>
+          <div>
+            <div class="payment-label">UPI Payment</div>
+            <div class="payment-desc">GPay, PhonePe, Paytm, BHIM</div>
+          </div>
+        </label>
+        <div id="upiField" style="margin-top: -0.5rem; padding: 0 1rem 0.5rem;">
+          <input type="text" class="upi-input" placeholder="Enter UPI ID (e.g. name@gpay)">
+        </div>
+
+        <label class="payment-method" onclick="selectPayment(this,'card')">
+          <input type="radio" name="payment">
+          <div class="payment-icon">💳</div>
+          <div>
+            <div class="payment-label">Debit / Credit Card</div>
+            <div class="payment-desc">Visa, Mastercard, RuPay</div>
+          </div>
+        </label>
+
+        <label class="payment-method" onclick="selectPayment(this,'cod')">
+          <input type="radio" name="payment">
+          <div class="payment-icon">💵</div>
+          <div>
+            <div class="payment-label">Cash on Delivery</div>
+            <div class="payment-desc">Pay when your order arrives</div>
+          </div>
+        </label>
+      </div>
+
+      <button class="btn-pay" onclick="placeOrder()">Place Order →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-icon">🎉</div>
+  <div class="success-title">Order Placed!</div>
+  <div class="success-sub">We'll reach you shortly to confirm delivery</div>
+  <button class="btn-offer" style="margin-top: 1rem;" onclick="closeSuccess()">Continue Shopping</button>
+</div>
+
+<!-- ADMIN FAB -->
+<button class="admin-fab" id="adminFab" onclick="openAdminAdd()" title="Add new item" style="display:none;">+</button>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ========= DATA ========= //
+const menuItems = [
+  { id:1, name:'Classic Brownie', desc:'Signature rich and fudgy classic', priceM:25, priceB:40, cat:'classic', emoji:'🍫', special:false, bg:'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&q=80', size:'normal' },
+  { id:2, name:'Nutella Brownie', desc:'Swirled with rich Nutella hazelnut spread', priceM:30, priceB:60, cat:'classic', emoji:'🫙', special:false, bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80', size:'normal' },
+  { id:3, name:'Dark Choco Chips', desc:'Intense dark chocolate brownie with chips', priceM:30, priceB:49, cat:'classic', emoji:'🖤', special:false, bg:'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80', size:'normal' },
+  { id:4, name:'KitKat Brownie', desc:'Topped with crushed KitKat bars', priceM:25, priceB:46, cat:'classic', emoji:'🍬', special:false, bg:'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&q=80', size:'normal' },
+  { id:5, name:'Death by Chocolate', desc:'Ultra-dark with luxurious chocolate crisps', priceM:35, priceB:85, cat:'premium', emoji:'💀', special:true, bg:'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400&q=80', size:'wide' },
+  { id:6, name:'Peanut Butter Brownie', desc:'Swirled with creamy peanut butter', priceM:30, priceB:85, cat:'premium', emoji:'🥜', special:false, bg:'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80', size:'normal' },
+  { id:7, name:'White Chocolate', desc:'Creamy white chocolate brownie', priceM:30, priceB:55, cat:'premium', emoji:'🤍', special:false, bg:'https://images.unsplash.com/photo-1559622214-f8a9850965bb?w=400&q=80', size:'normal' },
+  { id:8, name:'Kunafaa Brownie', desc:'Traditional kunafaa topping with pistachios', priceM:40, priceB:75, cat:'special', emoji:'🌿', special:true, bg:'https://images.unsplash.com/photo-1587241321921-91a834d6d191?w=400&q=80', size:'normal' },
+  { id:9, name:'Dark Chocolate Brownie', desc:'Deep dark brownie for the true connoisseur', priceM:30, priceB:60, cat:'classic', emoji:'🍫', special:false, bg:'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80', size:'normal' },
+  { id:10, name:'Double Chocolate', desc:'Extra chips with a double dose of rich chocolate', priceM:30, priceB:55, cat:'premium', emoji:'🍫', special:true, bg:'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80', size:'normal' },
+  { id:11, name:'Melted Choc & Pecans', desc:'Fudgy with roasted walnuts and pecans', priceM:25, priceB:45, cat:'special', emoji:'🥧', special:false, bg:'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?w=400&q=80', size:'normal' },
+  { id:12, name:'Brownie Bits', desc:'Bite-sized fudgy brownie cubes', priceM:25, priceB:40, cat:'bits', emoji:'🎲', special:false, bg:'https://images.unsplash.com/photo-1548365328-8c6db3220e4c?w=400&q=80', size:'normal' },
+  { id:13, name:'Combo Box (6 pcs)', desc:'6-piece variety brownie box — best value!', priceM:200, priceB:null, cat:'bits', emoji:'📦', special:true, bg:'https://images.unsplash.com/photo-1491330399998-94f7c9d8a7a5?w=400&q=80', size:'wide' },
+];
+
+let cart = [];
+let currentFilter = 'all';
+let currentSearch = '';
+
+// ========= PAGE ROUTING ========= //
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById(id+'-page');
+  if(page) page.classList.add('active');
+  if(id === 'menu') renderBento();
+  document.getElementById('adminFab').style.display = id === 'menu' ? 'flex' : 'none';
+  window.scrollTo(0,0);
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+function toggleMobileNav() {
+  document.getElementById('mobileNav').classList.toggle('open');
+}
+
+// ========= LOCATION ========= //
+function setLocation() {
+  const loc = prompt('Enter your area / locality in Trichy:');
+  if(loc) {
+    document.getElementById('locationText').textContent = '📍 ' + loc;
+    showToast('Delivery location set to ' + loc);
+  }
+}
+
+// ========= BENTO GRID ========= //
+function renderBento() {
+  const grid = document.getElementById('bentoGrid');
+  const filtered = menuItems.filter(item => {
+    const matchCat = currentFilter === 'all' || item.cat === currentFilter;
+    const matchSearch = item.name.toLowerCase().includes(currentSearch) || item.desc.toLowerCase().includes(currentSearch);
+    return matchCat && matchSearch;
+  });
+
+  grid.innerHTML = '';
+  filtered.forEach((item, i) => {
+    const isFeatured = item.special && item.size === 'wide';
+    const sizeClass = isFeatured ? 'wide' : (item.size === 'tall' ? 'tall' : '');
+    
+    if(isFeatured) {
+      grid.innerHTML += `
+        <div class="bento-item featured-bento ${sizeClass}" style="animation: fadeUp 0.5s ${i*0.07}s ease both; background-image: linear-gradient(135deg, rgba(42,14,2,0.92), rgba(107,48,32,0.88)), url('${item.bg}'); background-size: cover; background-blend-mode: multiply;">
+          <div style="flex:1;"></div>
+          ${item.special ? '<span class="bento-special-badge">⭐ Special</span>' : ''}
+          <div class="bento-name">${item.emoji} ${item.name}</div>
+          <div class="bento-desc" style="color:rgba(255,248,240,0.7); margin: 0.3rem 0 0.8rem;">${item.desc}</div>
+          <div class="bento-footer">
+            <div class="bento-price">Rs ${item.priceM}/- <small>${item.priceB ? '· Big Rs '+item.priceB : ''}</small></div>
+            <button class="add-btn" onclick="addToCart(${item.id}, event)">+</button>
+          </div>
+        </div>`;
+    } else {
+      grid.innerHTML += `
+        <div class="bento-item ${sizeClass}" style="animation: fadeUp 0.5s ${i*0.07}s ease both;">
+          <div class="bento-img" style="background-image: url('${item.bg}');">
+            ${item.special ? '<span class="bento-special-badge">⭐ Special</span>' : ''}
+          </div>
+          <div class="bento-info">
+            <div class="bento-name">${item.emoji} ${item.name}</div>
+            <div class="bento-desc">${item.desc}</div>
+            <div class="bento-footer">
+              <div class="bento-price">Rs ${item.priceM}/- <small>· Big Rs ${item.priceB || '-'}</small></div>
+              <button class="add-btn" onclick="addToCart(${item.id}, event)">+</button>
+            </div>
+          </div>
+        </div>`;
+    }
+  });
+
+  if(!filtered.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-mid);">No brownies found 🍫</div>';
+  }
+}
+
+function filterMenu(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderBento();
+}
+
+function searchMenu() {
+  currentSearch = document.getElementById('menuSearch').value.toLowerCase();
+  renderBento();
+}
+
+// ========= CART ========= //
+function addToCart(id, e) {
+  if(e) e.stopPropagation();
+  const item = menuItems.find(m => m.id === id);
+  const existing = cart.find(c => c.id === id);
+  if(existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...item, qty: 1, selectedSize: 'M' });
+  }
+  updateCartUI();
+  showToast(item.name + ' added! 🍫', 'success');
+}
+
+function addComboToCart() {
+  addToCart(13);
+  toggleCart();
+}
+
+function removeFromCart(id) {
+  const idx = cart.findIndex(c => c.id === id);
+  if(idx > -1) {
+    if(cart[idx].qty > 1) cart[idx].qty--;
+    else cart.splice(idx, 1);
+  }
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const count = cart.reduce((s, c) => s + c.qty, 0);
+  document.getElementById('cartCount').textContent = count;
+  
+  const total = cart.reduce((s, c) => s + c.qty * c.priceM, 0);
+  document.getElementById('cartTotal').textContent = 'Rs ' + total + '/-';
+  document.getElementById('modalTotal').textContent = 'Rs ' + total + '/-';
+
+  const itemsEl = document.getElementById('cartItems');
+  const footerEl = document.getElementById('cartFooter');
+
+  if(!cart.length) {
+    itemsEl.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🍫</div><p>Your cart is empty</p><p style="font-size:0.82rem;color:var(--text-mid);margin-top:0.5rem;">Add some brownies from the menu!</p></div>`;
+    footerEl.style.display = 'none';
+  } else {
+    itemsEl.innerHTML = cart.map(c => `
+      <div class="cart-item">
+        <div class="cart-item-img" style="background-image:url('${c.bg}');"></div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${c.name}</div>
+          <div class="cart-item-price">Rs ${c.priceM * c.qty}/-</div>
+        </div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="removeFromCart(${c.id})">−</button>
+          <span class="qty-num">${c.qty}</span>
+          <button class="qty-btn" onclick="addToCart(${c.id})">+</button>
+        </div>
+      </div>`).join('');
+    footerEl.style.display = 'block';
+  }
+}
+
+function toggleCart() {
+  const sidebar = document.getElementById('cartSidebar');
+  const overlay = document.getElementById('cartOverlay');
+  const open = sidebar.classList.toggle('open');
+  overlay.classList.toggle('show', open);
+  if(open) updateCartUI();
+}
+
+// ========= LOGIN ========= //
+function doLogin() {
+  const email = document.getElementById('emailInput').value;
+  const pass = document.getElementById('passInput').value;
+  if(!email || !pass) { showToast('Please enter email and password'); return; }
+  
+  const loading = document.getElementById('loginLoading');
+  loading.classList.add('show');
+  
+  setTimeout(() => {
+    loading.classList.remove('show');
+    document.getElementById('loginBtn').textContent = '👤 ' + email.split('@')[0];
+    document.getElementById('adminFab').style.display = 'flex';
+    document.body.setAttribute('data-admin','true');
+    showToast('Welcome back! 🍫', 'success');
+    showPage('menu');
+  }, 2000);
+}
+
+function googleLogin() {
+  const loading = document.getElementById('loginLoading');
+  loading.classList.add('show');
+  document.querySelector('.loading-text').textContent = 'Connecting with Google…';
+  
+  setTimeout(() => {
+    loading.classList.remove('show');
+    document.querySelector('.loading-text').textContent = 'Logging you in…';
+    document.getElementById('loginBtn').textContent = '👤 Customer';
+    showToast('Signed in with Google! 🍫', 'success');
+    showPage('menu');
+  }, 1800);
+}
+
+// ========= PAYMENT ========= //
+function openPayment() {
+  if(!cart.length) { showToast('Add items to your cart first!'); return; }
+  document.getElementById('paymentModal').classList.add('show');
+}
+function closePayment() {
+  document.getElementById('paymentModal').classList.remove('show');
+}
+function selectPayment(el, type) {
+  document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('upiField').style.display = type === 'upi' ? 'block' : 'none';
+}
+function placeOrder() {
+  closePayment();
+  document.getElementById('cartSidebar').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('show');
+  cart = [];
+  updateCartUI();
+  document.getElementById('successOverlay').classList.add('show');
+}
+function closeSuccess() {
+  document.getElementById('successOverlay').classList.remove('show');
+  showPage('menu');
+}
+
+// ========= WHATSAPP ========= //
+function orderWhatsApp() {
+  const items = cart.length ? cart.map(c => `${c.qty}x ${c.name} (Rs ${c.priceM*c.qty})`).join(', ') : 'I would like to place an order';
+  const msg = encodeURIComponent(`Hi Amina Brownie! 🍫\n\n${items}\n\nPlease confirm my order and delivery details. Thank you!`);
+  window.open('https://wa.me/919999999999?text=' + msg, '_blank');
+}
+
+// ========= ADMIN ========= //
+function openAdminAdd() {
+  if(!document.body.getAttribute('data-admin')) {
+    showToast('Please login to add items'); showPage('login'); return;
+  }
+  const name = prompt('New brownie name:');
+  if(!name) return;
+  const priceM = parseInt(prompt('Medium price (Rs):') || 25);
+  const priceB = parseInt(prompt('Big price (Rs):') || 45);
+  menuItems.push({
+    id: Date.now(), name, desc: 'Freshly added item', priceM, priceB,
+    cat: 'special', emoji: '🍫', special: true,
+    bg: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&q=80',
+    size: 'normal'
+  });
+  renderBento();
+  showToast(name + ' added to menu! ✨', 'success');
+}
+
+// ========= CONTACT ========= //
+function submitContact() {
+  showToast('Message sent! We\'ll reply shortly 🍫', 'success');
+}
+
+// ========= TOAST ========= //
+function showToast(msg, type) {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.textContent = msg;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+// ========= INIT ========= //
+updateCartUI();
+renderBento();
+</script>
+</body>
+</html>
